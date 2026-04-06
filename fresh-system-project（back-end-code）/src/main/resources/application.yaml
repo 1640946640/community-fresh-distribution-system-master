@@ -1,0 +1,45 @@
+#服务器设置
+server:
+  port: 8080    #设置tomcat服务监听的端口号（优先级最低）
+  servlet:
+    context-path: "/"  #设置项目访问的虚拟目录
+
+#数据库连接池信息设置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:1252/fresh_system?allowMultiQueries=true  #allowMultiQueries在动态SQL中允许foreach标签执行多语句;
+
+  data: #redis数据库连接信息配置
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      password: 123456
+
+  servlet:
+    multipart:
+      max-file-size: 200MB   #单个文件上传最大大小限制
+      max-request-size: 1GB  #一个请求中多文件上传总共大小最大限制
+
+
+#mybatis-plus配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml   #指定mapper映射文件的位置
+
+  global-config:
+    db-config:
+      id-type: assign_uuid   #在向表中插入数据时使用雪花算法来自动生成ID（主键策略）
+      logic-delete-field: isDeleted   #全局指定逻辑删除字段(0未删除状态，1已删除状态)
+      logic-not-delete-value: 0
+      logic-delete-value: 1
+
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #将数据库查询的信息输出到控制台
+    map-underscore-to-camel-case: true   #开启数据库字段名到实体类属性的驼峰自动转化
+    auto-mapping-behavior: full  #在多表连接查询中设置ResultMap对连接的其它实体类普通字段也进行值映射(默认为单表普通列自动映射)。
+
+  type-aliases-package: com.orion.pojo  #将指定包下的类起别名（xml映射文件中类型别名指定无需包含实体类全路径）#指定mapper映射文件位置
